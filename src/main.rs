@@ -22,11 +22,13 @@ fn handle_client(mut stream: TcpStream) {
                     // we've got an EOF, stop blocking the program
                     break;
                 }
-                m
+                m // append m to the reference buf
             },
         };
         // this sends a static HTTP reponse with 'Pong!' as the payload
         // after this write completes, we again loop around
+        // match does a comparison to check the result returned from stream.write
+        // if OK, continue, if Error, break
         match stream.write(b"HTTP/1.0 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 5\r\n\r\nPong!\r\n") {
             Err(_) => break, // break, handle with 500 error reponse
             Ok(_) => continue, // continue the loop
